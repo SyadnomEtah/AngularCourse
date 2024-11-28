@@ -17,7 +17,7 @@ export class HomeComponent {
   users: any;
 
   ngOnInit() {
-    this.getUsers();
+    //this.getUsers();
   }
   registerToggle(){
     this.registerMode = !this.registerMode;
