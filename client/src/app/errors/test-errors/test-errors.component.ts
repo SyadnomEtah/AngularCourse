@@ -1,5 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-test-errors',
@@ -9,40 +10,40 @@ import {HttpClient} from '@angular/common/http';
   styleUrl: './test-errors.component.css'
 })
 export class TestErrorsComponent {
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = environment.apiUrl;
   private httpClient = inject(HttpClient);
   validationErrors: string[] = [];
 
   get400Error(){
-    this.httpClient.get(this.baseUrl + 'ErrorTest/bad-request').subscribe({
+    this.httpClient.get(`${this.baseUrl}ErrorTest/bad-request`).subscribe({
       next: data => console.log(data),
       error: error => console.log(error),
     });
   }
 
   get401Error(){
-    this.httpClient.get(this.baseUrl + 'ErrorTest/auth').subscribe({
+    this.httpClient.get(`${this.baseUrl}ErrorTest/auth`).subscribe({
       next: data => console.log(data),
       error: error => console.log(error),
     });
   }
 
   get404Error(){
-    this.httpClient.get(this.baseUrl + 'ErrorTest/not-found').subscribe({
+    this.httpClient.get(`${this.baseUrl}ErrorTest/not-found`).subscribe({
       next: data => console.log(data),
       error: error => console.log(error),
     });
   }
 
   get500Error(){
-    this.httpClient.get(this.baseUrl + 'ErrorTest/server-error').subscribe({
+    this.httpClient.get(`${this.baseUrl}ErrorTest/server-error`).subscribe({
       next: data => console.log(data),
       error: error => console.log(error),
     });
   }
 
   get400ValidationError(){
-    this.httpClient.post(this.baseUrl + 'Account/register',{}).subscribe({
+    this.httpClient.post(`${this.baseUrl}ErrorTest/Account/register`,{}).subscribe({
       next: data => console.log(data),
       error: error => {
         console.log(error);
