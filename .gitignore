@@ -4,3 +4,4 @@ bin/
 obj/
 
 API/appsettings.json
+*.user
