@@ -5,3 +5,5 @@ obj/
 
 API/appsettings.json
 *.user
+*.db-shm
+*.db-wal
