@@ -24,4 +24,4 @@ The technologies and libraries that were used to achieve the final result includ
 
 Additionaly front end side uses various interceptors, guards, directives and resolvers to hide and show content appropriate for user's role as well data provided through queries.
 
-This project was created by following intructions present in the [https://www.udemy.com/course/build-an-app-with-aspnet-core-and-angular-from-scratch/](Udemy course by Neil Cummings). 
+This project was created by following intructions present in the [Udemy course by Neil Cummings](https://www.udemy.com/course/build-an-app-with-aspnet-core-and-angular-from-scratch/). 
