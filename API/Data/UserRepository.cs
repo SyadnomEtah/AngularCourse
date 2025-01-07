@@ -36,6 +36,15 @@ public class UserRepository : IUserRepository
         return await _context.Users.FindAsync(userId);
     }
 
+    public async Task<AppUser?> GetUserByPhotoIdAsync(int photoId)
+    {
+        return await _context.Users
+            .Include(u => u.Photos)
+            .IgnoreQueryFilters()
+            .Where(u => u.Photos.Any(p => p.Id == photoId))
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<AppUser?> GetUserByUsernameAsync(string username)
     {
         return await _context.Users
@@ -51,27 +60,32 @@ public class UserRepository : IUserRepository
         {
             query = query.Where(x => x.Gender == userParams.Gender);
         }
-        
+
         var minDateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MaxAge - 1));
         var maxDateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MinAge));
-        
-        query = query.Where(x=> x.DateOfBirth >= minDateOfBirth && x.DateOfBirth <= maxDateOfBirth);
+
+        query = query.Where(x => x.DateOfBirth >= minDateOfBirth && x.DateOfBirth <= maxDateOfBirth);
 
         query = userParams.OrderBy switch
         {
             "created" => query.OrderByDescending(x => x.Created),
             _ => query.OrderBy(x => x.LastActive)
         };
-        
+
         return await PagedList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(_mapper.ConfigurationProvider),
             userParams.PageNumber, userParams.PageSize);
     }
 
-    public async Task<MemberDto?> GetMemberAsync(string username)
+    public async Task<MemberDto> GetMemberAsync(string username, bool isCurrentUser)
     {
-        return await _context.Users
+        var query = _context.Users
             .Where(x => x.UserName == username)
             .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
-            .SingleOrDefaultAsync();
+            .AsQueryable();
+
+        if (isCurrentUser)
+            query = query.IgnoreQueryFilters();
+
+        return await query.FirstOrDefaultAsync() ?? throw new Exception("Could not get user");
     }
 }

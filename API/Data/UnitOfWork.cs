@@ -8,13 +8,15 @@ public class UnitOfWork : IUnitOfWork
     public IUserRepository UserRepository { get; }
     public IMessageRepository MessageRepository { get; }
     public ILikesRepository LikesRepository { get; }
+    public IPhotoRepository PhotoRepository { get; }
     
-    public UnitOfWork(IUserRepository userRepository, IMessageRepository messageRepository, ILikesRepository likesRepository, DataContext context)
+    public UnitOfWork(DataContext context, IUserRepository userRepository, IMessageRepository messageRepository, ILikesRepository likesRepository, IPhotoRepository photoRepository)
     {
+        _context = context;
         UserRepository = userRepository;
         MessageRepository = messageRepository;
         LikesRepository = likesRepository;
-        _context = context;
+        PhotoRepository = photoRepository;
     }
     
     public async Task<bool> CommitAsync()
